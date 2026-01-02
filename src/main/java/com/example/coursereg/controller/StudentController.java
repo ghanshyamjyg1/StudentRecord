@@ -6,6 +6,11 @@ import com.example.coursereg.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+/**
+ * REST Controller for handling student-related HTTP requests.
+ * Provides endpoints for managing student records including registration, retrieval, and deletion.
+ * All endpoints are prefixed with "/api/students".
+ */
 
 @RestController
 @RequestMapping("/api/students")

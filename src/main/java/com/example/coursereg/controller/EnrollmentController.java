@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST Controller for handling enrollment-related HTTP requests.
+ * Provides endpoints for managing student enrollments in courses.
+ * All endpoints are prefixed with "/api/enrollments".
+ */
+
 @RestController
 @RequestMapping("/api/enrollments")
 @CrossOrigin
