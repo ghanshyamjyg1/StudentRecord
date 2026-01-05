@@ -26,6 +26,7 @@ form.addEventListener("submit", async function (e) {
 
     const course = {
         title: document.getElementById("title").value.trim(),
+        department: document.getElementById("department").value.trim(),
         description: document.getElementById("description").value.trim()
     };
 
@@ -63,6 +64,7 @@ async function loadCourses() {
                 <tr>
                     <td>${c.id}</td>
                     <td>${c.title}</td>
+                    <td>${c.department}</td>
                     <td>${c.description}</td>
                     <td>
                         ${role === "ROLE_ADMIN"
