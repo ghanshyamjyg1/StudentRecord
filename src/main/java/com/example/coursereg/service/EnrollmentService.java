@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -92,4 +93,34 @@ public class EnrollmentService {
             throw e; // Re-throw to be handled by the controller
         }
     }
+
+    @Transactional
+    public Enrollment update(Long id, Long studentId, Long courseId) {
+        Enrollment enrollment = repo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Enrollment not found with id: " + id));
+
+        // Check if the course is being changed
+        if (!enrollment.getCourse().getId().equals(courseId)) {
+            Course newCourse = courseRepo.findById(courseId)
+                    .orElseThrow(() -> new NoSuchElementException("Course not found with id: " + courseId));
+
+            // Check if the student is already enrolled in the new course
+            if (repo.existsByStudentIdAndCourseId(studentId, courseId)) {
+                throw new IllegalStateException("This student is already enrolled in the selected course");
+            }
+
+            // Update the course
+            enrollment.setCourse(newCourse);
+        }
+
+        // Update the student if changed (though this is less common)
+        if (!enrollment.getStudent().getId().equals(studentId)) {
+            Student student = studentRepo.findById(studentId)
+                    .orElseThrow(() -> new NoSuchElementException("Student not found with id: " + studentId));
+            enrollment.setStudent(student);
+        }
+
+        return repo.save(enrollment);
+    }
+
 }

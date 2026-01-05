@@ -337,6 +337,62 @@ td:last-child {
 td:last-child {
     text-align: center;
 }
+/* Add these styles */
+.btn-save {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Make table cells in edit mode full width */
+td input.form-control {
+    width: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+}
+/* Update button styles */
+.btn-update {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* Make sure form controls in table cells are properly sized */
+td .form-control {
+    width: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+/* Ensure buttons in table cells have proper spacing */
+td button {
+    margin: 0 2px;
+}
+/* Style for form controls in tables */
+select.form-control {
+    width: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
 
 
 

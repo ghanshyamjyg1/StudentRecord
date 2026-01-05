@@ -4,6 +4,7 @@ package com.example.coursereg.controller;
 import com.example.coursereg.entity.Enrollment;
 import com.example.coursereg.service.EnrollmentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,15 @@ public class EnrollmentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Enrollment> updateEnrollment(
+            @PathVariable Long id,
+            @RequestParam Long studentId,
+            @RequestParam Long courseId) {
+        return ResponseEntity.ok(service.update(id, studentId, courseId));
     }
 
 

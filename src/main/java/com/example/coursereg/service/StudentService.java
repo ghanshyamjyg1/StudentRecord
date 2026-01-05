@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class StudentService {
@@ -58,5 +60,16 @@ public class StudentService {
             logger.error(errorMsg, e);
             throw e;
         }
+    }
+    @Transactional
+    public Student update(Long id, Student studentDetails) {
+        return repo.findById(id)
+                .map(student -> {
+                    student.setName(studentDetails.getName());
+                    student.setEmail(studentDetails.getEmail());
+                    student.setMobile(studentDetails.getMobile());
+                    return repo.save(student);
+                })
+                .orElseThrow(() -> new NoSuchElementException("Student not found with id: " + id));
     }
 }

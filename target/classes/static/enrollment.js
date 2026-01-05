@@ -88,6 +88,7 @@ async function loadCoursesDropdown() {
 
 
 /* 📄 LOAD ENROLLMENTS (ADMIN + USER) */
+// Update the loadEnrollments function to include data attributes
 async function loadEnrollments() {
     try {
         const res = await fetch(enrollmentApi, { headers: authHeader() });
@@ -103,18 +104,21 @@ async function loadEnrollments() {
         }
 
         data.forEach(e => {
-            table.innerHTML += `
-                <tr>
-                    <td>${e.id}</td>
-                    <td>${e.student.name}</td>
-                    <td>${e.course.title}</td>
-                    <td>
-                        ${role === "ROLE_ADMIN"
-                            ? `<button onclick="deleteEnrollment(${e.id})">Delete</button>`
-                            : "View Only"}
-                    </td>
-                </tr>
+            const row = document.createElement('tr');
+            row.setAttribute('data-id', e.id);
+            row.setAttribute('data-student-id', e.student.id); // Store student ID for updates
+            row.innerHTML = `
+                <td>${e.id}</td>
+                <td>${e.student.name}</td>
+                <td>${e.course.title}</td>
+                <td>
+                    ${role === "ROLE_ADMIN" ? `
+                        <button class="btn-update" onclick="editEnrollment('${e.id}', '${e.student.id}', '${e.course.id}')">Update</button>
+                        <button class="delete-btn" onclick="deleteEnrollment(${e.id})">Delete</button>
+                    ` : "View Only"}
+                </td>
             `;
+            table.appendChild(row);
         });
     } catch (err) {
         showError(err.message);
@@ -141,6 +145,88 @@ async function deleteEnrollment(id) {
         loadEnrollments();
     } catch (err) {
         showError(err.message);
+    }
+}
+// Update the editEnrollment function
+async function editEnrollment(id, currentStudentId, currentCourseId) {
+    if (role !== "ROLE_ADMIN") {
+        showError("Only ADMIN can edit enrollments");
+        return;
+    }
+
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (!row) {
+        showError("Could not find enrollment row");
+        return;
+    }
+
+    // Store original content for cancel
+    row._originalContent = row.innerHTML;
+
+    try {
+        // Load only courses for dropdown (not students)
+        const coursesRes = await fetch(courseApi, { headers: authHeader() });
+        if (!coursesRes.ok) throw new Error("Failed to load courses");
+        const courses = await coursesRes.json();
+
+        // Create course options
+        let courseOptions = courses.map(c =>
+            `<option value="${c.id}" ${c.id == currentCourseId ? 'selected' : ''}>${c.title}</option>`
+        ).join('');
+
+        // Set edit mode - only show course dropdown, keep student name as text
+        row.innerHTML = `
+            <td>${id}</td>
+            <td>${row.cells[1].textContent}</td> <!-- Keep original student name as text -->
+            <td>
+                <select class="form-control" id="editCourseId">
+                    ${courseOptions}
+                </select>
+            </td>
+            <td>
+                <button class="btn-save" onclick="saveEnrollment(${id}, this)">Save</button>
+                <button class="btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+            </td>
+        `;
+    } catch (err) {
+        showError(err.message);
+    }
+}
+
+
+// Save enrollment function
+// Update the saveEnrollment function
+async function saveEnrollment(id, button) {
+    try {
+        const row = button.closest('tr');
+        const courseId = row.querySelector('#editCourseId').value;
+
+        // Get the student ID from the original row data
+        const studentId = row.getAttribute('data-student-id');
+
+        const res = await fetch(`${enrollmentApi}/${id}?studentId=${studentId}&courseId=${courseId}`, {
+            method: "PUT",
+            headers: authHeader()
+        });
+
+        if (!res.ok) {
+            const error = await res.text();
+            throw new Error(error || "Update failed");
+        }
+
+        loadEnrollments();
+    } catch (err) {
+        showError(err.message);
+    }
+}
+
+// Reuse the cancelEdit function from student.js
+function cancelEdit(button) {
+    const row = button.closest('tr');
+    if (row._originalContent) {
+        row.innerHTML = row._originalContent;
+    } else {
+        loadEnrollments();
     }
 }
 
