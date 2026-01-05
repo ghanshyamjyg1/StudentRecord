@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Enroll Student</title>
+    <meta charset="UTF-8">
+    <title>Student Enrollment</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+
 <div class="top-bar">
-    <meta charset="UTF-8">
     <a href="/index.html" class="home-link">🏠 Home</a>
 </div>
 
-
 <h2>Student Enrollment</h2>
+
+<!-- ❗ Error Box -->
+<div id="errorBox" class="error-box" style="display:none;"></div>
 
 <form id="enrollForm">
     <select id="studentSelect" required></select>
@@ -27,11 +30,21 @@
         <th>ID</th>
         <th>Student</th>
         <th>Course</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody id="enrollTable"></tbody>
 </table>
 
+<!-- ✅ AUTH FIRST -->
+<script src="/auth.js"></script>
+
+<!-- ✅ PAGE SCRIPT -->
 <script src="/enrollment.js"></script>
+
+<script>
+    updateNavbar();
+</script>
+
 </body>
 </html>

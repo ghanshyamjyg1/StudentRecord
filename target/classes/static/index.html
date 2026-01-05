@@ -3,54 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <title>Course Registration System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ✅ IMPORTANT -->
+    <script src="/auth.js" defer></script>
     <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
 
-<div class="navbar">
-    <a href="/index.html">Home</a>
-    <a href="/course.html">Courses</a>
-    <a href="/students.html">Students</a>
-    <a href="/enrollments.html">Enrollments</a>
-</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand">Course System</a>
 
-<div class="home-container">
-    <h1>Welcome to the Course Registration System</h1>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link secure-link" href="/courses.html">Courses</a></li>
+            <li class="nav-item"><a class="nav-link secure-link" href="/students.html">Students</a></li>
+            <li class="nav-item"><a class="nav-link secure-link" href="/enrollments.html">Enrollments</a></li>
+            <li class="nav-item"><span id="roleBadge" class="role-badge ms-3"></span></li>
+            <li class="nav-item">
+                <button
+                        id="logoutBtn"
+                        class="btn btn-light btn-sm ms-3"
+                        onclick="logout()">
+                    Logout
+                </button>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-    <p class="subtitle">
-        A simple and efficient platform to manage courses, students, and enrollments.
-    </p>
+<div class="container mt-5">
 
-    <div class="features">
-        <div class="feature-box">
-            <h3>📚 Course Management</h3>
-            <p>
-                Create, update, view, and delete course information with ease.
-                Keep all course details organized in one place.
-            </p>
-        </div>
+    <!-- ❌ ERROR BOX -->
+    <div id="errorBox" class="alert alert-danger" style="display:none;"></div>
 
-        <div class="feature-box">
-            <h3>👨‍🎓 Student Management</h3>
-            <p>
-                Maintain student records including personal details and academic data
-                in a structured and secure way.
-            </p>
-        </div>
-
-        <div class="feature-box">
-            <h3>📝 Enrollment Management</h3>
-            <p>
-                Enroll students into courses and track their registrations
-                efficiently with real-time updates.
-            </p>
+    <!-- 🔐 LOGIN -->
+    <div id="loginSection" class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow p-3">
+                <h4 class="text-center">🔐 Login</h4>
+                <input id="username" class="form-control mb-2" placeholder="Username">
+                <input id="password" type="password" class="form-control mb-3" placeholder="Password">
+                <button class="btn btn-primary w-100" onclick="login()">Login</button>
+            </div>
         </div>
     </div>
 
-    <p class="footer-text">
-        Designed to simplify academic administration and improve productivity.
-    </p>
+    <!-- 🏠 HOME CONTENT -->
+    <div class="home-container mt-4">
+        <h1>Welcome to the Course Registration System</h1>
+
+        <p class="subtitle">
+            A secure and efficient platform to manage academic operations seamlessly.
+        </p>
+
+        <div class="features">
+            <div class="feature-box">
+                <h3>📚 Course Management</h3>
+                <p>Create, manage, and organize courses with full control and visibility.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>👨‍🎓 Student Management</h3>
+                <p>Maintain accurate student records with role-based access.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>📝 Enrollment Management</h3>
+                <p>Enroll students into courses and track registrations in real time.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📊 DASHBOARD (AFTER LOGIN) -->
+    <div id="dashboard" class="dashboard row text-center">
+        <div class="col-md-4">
+            <div class="card p-3 shadow">
+                <h4>📚 Courses</h4>
+                <p>Manage all courses</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow">
+                <h4>👨‍🎓 Students</h4>
+                <p>View and manage students</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow">
+                <h4>📝 Enrollments</h4>
+                <p>Track enrollments</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔒 ROLE INFO -->
+    <div class="mt-5 text-center">
+        <h4>🔒 Admin vs User Capabilities</h4>
+        <p><strong>ADMIN:</strong> Create, delete, enroll students</p>
+        <p><strong>USER:</strong> View courses, students, enrollments</p>
+    </div>
+
 </div>
+
+<!-- 🌗 FOOTER -->
+<footer>
+    Version 1.0 | Author: Aashika Mandal
+    <span class="dark-toggle" onclick="toggleDarkMode()">🌗</span>
+</footer>
+
 
 </body>
 </html>

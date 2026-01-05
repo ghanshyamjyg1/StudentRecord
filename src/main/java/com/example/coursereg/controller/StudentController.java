@@ -3,6 +3,8 @@ package com.example.coursereg.controller;
 
 import com.example.coursereg.entity.Student;
 import com.example.coursereg.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class StudentController {
 
     private final StudentService service;
@@ -23,17 +25,22 @@ public class StudentController {
         this.service = service;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Student register(@RequestBody Student student) {
         return service.save(student);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public List<Student> all() {
         return service.findAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }

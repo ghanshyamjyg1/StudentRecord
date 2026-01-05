@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Student Registration</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+
 <div class="top-bar">
-    <meta charset="UTF-8">
     <a href="/index.html" class="home-link">🏠 Home</a>
 </div>
 
-
 <h2>Student Registration</h2>
+
+<!-- ✅ ERROR BOX -->
+<div id="errorBox" class="error-box" style="display:none;"></div>
 
 <form id="studentForm">
     <input type="text" id="name" placeholder="Student Name" required />
     <input type="email" id="email" placeholder="Email" required />
-    <input type="text" id="mobile" placeholder="MobileNo" required />
+    <input type="text" id="mobile" placeholder="Mobile No" required />
     <button type="submit">Add Student</button>
 </form>
 
@@ -28,14 +31,22 @@
         <th>ID</th>
         <th>Name</th>
         <th>Email</th>
-        <th>MobileNo</th>
+        <th>Mobile</th>
         <th>Action</th>
-
     </tr>
     </thead>
     <tbody id="studentTable"></tbody>
 </table>
 
+<!-- ✅ LOAD AUTH FIRST -->
+<script src="/auth.js"></script>
+
+<!-- ✅ THEN PAGE SCRIPT -->
 <script src="/student.js"></script>
+
+<script>
+    updateNavbar();
+</script>
+
 </body>
 </html>

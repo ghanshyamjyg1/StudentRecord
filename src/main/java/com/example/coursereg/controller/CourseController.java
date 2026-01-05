@@ -3,6 +3,7 @@ package com.example.coursereg.controller;
 
 import com.example.coursereg.entity.Course;
 import com.example.coursereg.service.CourseService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class CourseController {
      * @param course The course object to be created, provided in the request body
      * @return The created course with generated ID
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Course add(@RequestBody Course course) {
         return service.save(course);
@@ -44,6 +46,7 @@ public class CourseController {
      *
      * @return A list of all courses
      */
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public List<Course> all() {
         return service.findAll();
